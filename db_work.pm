@@ -13,7 +13,7 @@ sub db_initialization {
 }
 
 sub get_tasks {
-	$dbh = &db_initialization;
+	my $dbh = &db_initialization;
 	my $state= $dbh->prepare("SELECT id, task_description FROM task");
 	$state->execute();
 
@@ -26,17 +26,19 @@ sub get_tasks {
 }
 
 sub add_task {
-	$dbh = &db_initialization;
+	my $dbh = &db_initialization;
 	my ($status, $task_description) = @_;
-	my $state = $dbh->prepare("INSERT INTO task (status, task_description) VALUES (?, ?)");
+	my $state = $dbh->prepare("INSERT INTO task (status, task_description) VALUES (?, ?)")
+		or "An error uccurated: " . $state->errstr;
 	$state->execute($status, $task_description);
 	$dbh->disconnect();
 }
 
 sub remove_task {
 	my $id = shift;
-	$dbh = &db_initialization;
-	my $state = $dbh->prepare("DELETE FROM task WHERE id = ?");
+	my $dbh = &db_initialization;
+	my $state = $dbh->prepare("DELETE FROM task WHERE id = ?")
+		or "Can't remove a task" . $state->errstr;
 	$state->execute($id);
 	$dbh->disconnect();
 }

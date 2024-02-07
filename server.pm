@@ -11,8 +11,11 @@ sub handle_request {
 
 	if ($cgi->param('add'))  {
 		my $task = $cgi->param('task');
-		if ($task ge 4) {
+		if (length $task >= 4) {
 			&db_work::add_task("false", $task);
+			print "HTTP/1.1 302 Found\r\n";
+			print "Location: /\r\n";
+			print "\r\n";
 		}
 	}
 	elsif ($cgi->param('delete'))  {
@@ -36,8 +39,6 @@ sub handle_request {
 	}
 	$html =~s|<body>|<body>$task_list|;
 	print $html;
-
-
 }
 sub read_html_file {
         my ($filepath) = shift;
