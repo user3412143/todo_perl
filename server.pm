@@ -25,10 +25,14 @@ sub handle_request {
 	my %task_hash = &db_work::get_tasks();
 	my $task_list = "";
 	my @sorted_keys = sort {$a <=> $b} keys %task_hash;
-	# @sorted_keys = map {$_ + 1} @sorted_keys;
-	foreach my $id (@sorted_keys) {
-		my $task_description = $task_hash{$id};
-		$task_list .= "<li> $id: $task_description <a href='/?delete=1&index=$id'>[Delete]</a></li><p>";
+
+	if (@sorted_keys) {
+		foreach my $id (@sorted_keys) {
+			my $task_description = $task_hash{$id};
+			$task_list .= "<li> $id: $task_description <a href='/?delete=1&index=$id'>[Delete]</a></li><p>";
+		}
+	} else {
+		print "No tasks was found";
 	}
 	$html =~s|<body>|<body>$task_list|;
 	print $html;
