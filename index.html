@@ -2,13 +2,20 @@
 <html>
  <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <link rel="stylesheet" href="./css/material-components-web.min.css"/>
-  <script> src="./js/material-components-web.min.js"></script>
+
   <title>List tasks</title>
  </head>
  <body>
-  <form action="/">
-   <p><input name="task"><input type="submit" name="add" value="Add a task"</p>
+  <form action="/tasks" method="post">
+   <p><input name="task"><input type="submit" value="Add a task"</p>
   </form>
+  <script>
+	  function delete_task(event, task_id) {
+		  alert("here");
+		  event.preventDefault();
+		  fetch(/tasks/?id=${task_id}, {
+                          method: 'DELETE'});
+          }
+  </script>
  </body>
 </html>
